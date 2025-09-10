@@ -257,7 +257,6 @@ class _ProductTile extends StatelessWidget {
   }
 }
 
-// small helper to draw white heart with purple bubble like screenshot
 extension _IconFx on Icon {
   Widget foregroundEffect() {
     return Stack(

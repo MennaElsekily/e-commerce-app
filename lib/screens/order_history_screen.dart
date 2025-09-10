@@ -133,10 +133,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                onPressed: () {
-                  // Example: mark order as completed
-                  // ordersProvider.updateOrderStatus(order.id, "completed");
-                },
+                onPressed: () {},
                 child: const Text("Track Order"),
               ),
             ],

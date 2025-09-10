@@ -80,7 +80,6 @@ class _HomePageState extends State<HomePage> {
     final productsProvider = context.watch<ProductsProvider>();
     final user = authProvider.currentUser;
 
-    // Robust avatar resolver: supports network URL or asset path
     ImageProvider avatarImage;
     final img = user?.profileImage ?? '';
     if (img.isNotEmpty &&
@@ -179,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                   icon: const Icon(Icons.clear),
                                   onPressed: () {
                                     _searchController.clear();
-                                    setState(() {}); // refresh suffixIcon
+                                    setState(() {});
                                   },
                                 )
                               : null,

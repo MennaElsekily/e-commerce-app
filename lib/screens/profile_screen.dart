@@ -26,17 +26,17 @@ class ProfileScreen extends StatelessWidget {
           children: [
             const SizedBox(height: 8),
             Container(
-              width: 92, // 2 * radius
+              width: 92,
               height: 92,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: Colors.grey.shade200,
               ),
-              clipBehavior: Clip.antiAlias, // keeps it circular
+              clipBehavior: Clip.antiAlias,
               child: Image(
-                image: avatar, // your existing ImageProvider
-                fit: BoxFit.contain, // shows the whole photo, no extra zoom
-                // If you prefer slight crop but less zoom, try: BoxFit.fitWidth or BoxFit.fitHeight
+                image: avatar,
+                fit: BoxFit.contain,
+
                 errorBuilder: (_, __, ___) =>
                     const Icon(Icons.person, size: 40, color: Colors.grey),
               ),

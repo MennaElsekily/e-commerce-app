@@ -10,12 +10,13 @@ class ProductDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double ratingValue = (product.rating as num).toDouble();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: [
-            // 📸 Product Image + Back & Favorite buttons
             Stack(
               children: [
                 AspectRatio(
@@ -48,9 +49,7 @@ class ProductDetailScreen extends StatelessWidget {
                         Icons.favorite_border,
                         color: Colors.black,
                       ),
-                      onPressed: () {
-                        // TODO: wishlist feature
-                      },
+                      onPressed: () {},
                     ),
                   ),
                 ),
@@ -68,13 +67,18 @@ class ProductDetailScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          product.title,
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            product.title,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
+                        const SizedBox(width: 12),
                         Text(
                           "\$${product.price.toStringAsFixed(2)}",
                           style: const TextStyle(
@@ -87,14 +91,16 @@ class ProductDetailScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    // ⭐ Rating (static example for now)
                     Row(
-                      children: const [
-                        Icon(Icons.star, color: Colors.amber, size: 18),
-                        SizedBox(width: 4),
+                      children: [
+                        ..._buildStars(ratingValue),
+                        const SizedBox(width: 6),
                         Text(
-                          "4.5 (20 Reviews)",
-                          style: TextStyle(color: Colors.black54),
+                          ratingValue.toStringAsFixed(1),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
                         ),
                       ],
                     ),
@@ -143,7 +149,7 @@ class ProductDetailScreen extends StatelessWidget {
                         ).addToCart(product);
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Added  to cart')),
+                          const SnackBar(content: Text('Added to cart')),
                         );
                       },
                       style: ElevatedButton.styleFrom(
@@ -185,5 +191,24 @@ class ProductDetailScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildStars(double rating) {
+    const starColor = Colors.amber;
+    final fullStars = rating.floor();
+    final hasHalf = (rating - fullStars) >= 0.25 && (rating - fullStars) < 0.75;
+    final totalStars = 5;
+
+    final stars = <Widget>[];
+    for (int i = 0; i < fullStars && i < totalStars; i++) {
+      stars.add(const Icon(Icons.star, color: starColor, size: 18));
+    }
+    if (hasHalf && stars.length < totalStars) {
+      stars.add(const Icon(Icons.star_half, color: starColor, size: 18));
+    }
+    while (stars.length < totalStars) {
+      stars.add(const Icon(Icons.star_border, color: starColor, size: 18));
+    }
+    return stars;
   }
 }

@@ -1,3 +1,4 @@
+// lib/screens/filter_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
@@ -193,18 +194,14 @@ class _FilterScreenState extends State<FilterScreen> {
             ),
           ),
           const SizedBox(height: 16),
+
+          // ⬇️ Clear All now navigates back to Home (root)
           TextButton(
             onPressed: () {
               final p = context.read<ProductsProvider>();
               p.clearFilters();
-              setState(() {
-                _brands.clear();
-                _categories.clear();
-                _inStockOnly = false;
-                _priceRange = RangeValues(p.minPrice, p.maxPrice);
-                _minRating = 0;
-                _minDiscount = 0;
-              });
+              // Go straight back to the first route (HomePage)
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: const Text('Clear All', style: TextStyle(color: Colors.red)),
           ),

@@ -9,10 +9,8 @@ const _kPurple = Color(0xFF6C4CFF);
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key, this.title, this.query});
 
-  /// Optional page title (defaults to "Products")
   final String? title;
 
-  /// Optional query label to mimic the "Results for “Shoes”" header
   final String? query;
 
   @override
@@ -53,7 +51,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
-            onPressed: () {}, // hook up if you add search here
+            onPressed: () {},
           ),
           const SizedBox(width: 4),
         ],
@@ -64,7 +62,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
               onRefresh: prov.fetchProducts,
               child: CustomScrollView(
                 slivers: [
-                  // Header "Results for" + count (like screenshot)
                   SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
