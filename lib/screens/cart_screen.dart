@@ -181,7 +181,7 @@ class CartScreen extends StatelessWidget {
                         ),
                         child: const Text(
                           "Check Out",
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
                     ],
