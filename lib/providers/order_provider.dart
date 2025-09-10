@@ -12,7 +12,7 @@ class OrdersProvider with ChangeNotifier {
     List<CartItem> cartItems,
     double total,
     String paymentMethod, {
-    String status = "active", // ✅ allow setting status
+    String status = "active",
   }) {
     _orders.insert(
       0,
