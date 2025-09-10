@@ -195,12 +195,11 @@ class _FilterScreenState extends State<FilterScreen> {
           ),
           const SizedBox(height: 16),
 
-          // ⬇️ Clear All now navigates back to Home (root)
           TextButton(
             onPressed: () {
               final p = context.read<ProductsProvider>();
               p.clearFilters();
-              // Go straight back to the first route (HomePage)
+
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: const Text('Clear All', style: TextStyle(color: Colors.red)),

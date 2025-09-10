@@ -40,37 +40,41 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onItemTapped(int index) async {
+    // Update the selected tab immediately
     setState(() => _selectedIndex = index);
 
-    if (index == 1) {
-      // focus search on Home
-      _scrollController.animateTo(
-        0,
-        duration: const Duration(milliseconds: 300),
-        curve: Curves.easeInOut,
-      );
-      FocusScope.of(context).requestFocus(_searchFocusNode);
-      return;
-    }
+    switch (index) {
+      case 0:
+        // Home – nothing special
+        break;
 
-    if (index == 2) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const CartScreen()),
-      );
-      if (!mounted) return;
-      setState(() => _selectedIndex = 0);
-      return;
-    }
+      case 1:
+        // Focus search on Home
+        _scrollController.animateTo(
+          0,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        FocusScope.of(context).requestFocus(_searchFocusNode);
+        break;
 
-    if (index == 3) {
-      await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => const ProfileScreen()),
-      );
-      if (!mounted) return;
-      setState(() => _selectedIndex = 0);
-      return;
+      case 2:
+        // Cart
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const CartScreen()));
+        if (!mounted) return;
+        setState(() => _selectedIndex = 0); // return highlight to Home
+        break;
+
+      case 3:
+        // Profile
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const ProfileScreen()));
+        if (!mounted) return;
+        setState(() => _selectedIndex = 0); // return highlight to Home
+        break;
     }
   }
 

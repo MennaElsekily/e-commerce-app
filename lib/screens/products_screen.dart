@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
 import '../models/product_model.dart';
 import 'productdetail_screen.dart';
+// ✅ add this import
+import '../providers/cart_provider.dart';
 
 const _kPurple = Color(0xFF6C4CFF);
 
@@ -10,7 +12,6 @@ class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key, this.title, this.query});
 
   final String? title;
-
   final String? query;
 
   @override
@@ -97,7 +98,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
                       ),
                     ),
                   ),
-
                   if (items.isEmpty)
                     const SliverFillRemaining(
                       hasScrollBody: false,
@@ -164,7 +164,6 @@ class _ProductCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            // image + heart + plus
             Expanded(
               child: Stack(
                 children: [
@@ -189,7 +188,6 @@ class _ProductCard extends StatelessWidget {
                       },
                     ),
                   ),
-                  // heart badge (top-right)
                   Positioned(
                     top: 8,
                     right: 8,
@@ -207,16 +205,17 @@ class _ProductCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // plus (bottom-right)
+                  // ✅ Add to cart
                   Positioned(
                     right: 8,
                     bottom: 8,
                     child: GestureDetector(
                       onTap: () {
-                        // TODO: hook to CartProvider
+                        context.read<CartProvider>().addToCart(product);
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Added ${product.title} to cart '),
+                            content: Text('Added ${product.title} to cart'),
                             duration: const Duration(seconds: 1),
                           ),
                         );
@@ -239,7 +238,6 @@ class _ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            // title + price (purple)
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
               child: Row(

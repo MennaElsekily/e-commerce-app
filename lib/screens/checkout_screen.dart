@@ -121,13 +121,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
                 final List<CartItem> items = cartProvider.items.values.toList();
 
-                // ✅ Save order in provider
                 ordersProvider.addOrder(items, widget.total, _paymentMethod);
 
-                // ✅ Clear the cart
                 cartProvider.clearCart();
 
-                // ✅ Navigate to order history
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (_) => const OrderHistoryScreen()),
