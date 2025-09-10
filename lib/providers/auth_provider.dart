@@ -23,6 +23,7 @@ class AuthProvider with ChangeNotifier {
       await prefs.setString("userName", user.userName);
       await prefs.setString("email", user.email);
       await prefs.setString("profileImage", user.profileImage ?? "");
+      await prefs.setBool("isLoggedIn", true);
 
       notifyListeners();
       return true;
@@ -53,6 +54,8 @@ class AuthProvider with ChangeNotifier {
   Future<void> logout() async {
     _currentUser = null;
     final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool("isLoggedIn", false);
+
     await prefs.clear();
     notifyListeners();
   }

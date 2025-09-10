@@ -28,8 +28,6 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const _purple = Color(0xFF6C4CFF);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

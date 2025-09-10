@@ -66,17 +66,17 @@ class ProductsProvider with ChangeNotifier {
       _minPrice = _minPriceAvail;
       _maxPrice = _maxPriceAvail;
 
-      // brands & categories
+      // brands & categories (ignore empties)
       _allBrands
         ..clear()
         ..addAll(
-          _products.map((p) => p.brand).where((b) => b.trim().isNotEmpty),
+          _products.map((p) => p.brand.trim()).where((b) => b.isNotEmpty),
         );
 
       _allCategories
         ..clear()
         ..addAll(
-          _products.map((p) => p.category).where((c) => c.trim().isNotEmpty),
+          _products.map((p) => p.category.trim()).where((c) => c.isNotEmpty),
         );
 
       // permissive defaults
@@ -97,16 +97,18 @@ class ProductsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Search (applied on top of the filtered set)
   void searchByCategory(String query) {
     final q = query.trim().toLowerCase();
+
+    final base = _getFilteredBase();
+
     if (q.isEmpty) {
-      _applyFiltersInternal();
+      _filteredProducts = base;
     } else {
-      _filteredProducts = _filteredProducts.where((p) {
-        final title = p.title.toLowerCase();
-        final category = p.category.toLowerCase();
-        return title.contains(q) || category.contains(q);
+      _filteredProducts = base.where((p) {
+        final titleLc = p.title.toLowerCase();
+        final categoryLc = p.category.toLowerCase();
+        return titleLc.contains(q) || categoryLc.contains(q);
       }).toList();
     }
     notifyListeners();
@@ -114,20 +116,26 @@ class ProductsProvider with ChangeNotifier {
 
   // ===== Filter setters =====
   void toggleBrand(String brand) {
-    if (_selectedBrands.contains(brand)) {
-      _selectedBrands.remove(brand);
+    final b = brand.trim();
+    if (b.isEmpty) return;
+
+    if (_selectedBrands.contains(b)) {
+      _selectedBrands.remove(b);
     } else {
-      _selectedBrands.add(brand);
+      _selectedBrands.add(b);
     }
     _applyFiltersInternal();
     notifyListeners();
   }
 
   void toggleCategory(String category) {
-    if (_selectedCategories.contains(category)) {
-      _selectedCategories.remove(category);
+    final c = category.trim();
+    if (c.isEmpty) return;
+
+    if (_selectedCategories.contains(c)) {
+      _selectedCategories.remove(c);
     } else {
-      _selectedCategories.add(category);
+      _selectedCategories.add(c);
     }
     _applyFiltersInternal();
     notifyListeners();
@@ -172,19 +180,24 @@ class ProductsProvider with ChangeNotifier {
 
   // ===== Core filtering logic =====
   void _applyFiltersInternal() {
-    _filteredProducts = _products.where((p) {
+    _filteredProducts = _getFilteredBase();
+  }
+
+  /// Builds the filtered list from _products using the current filter state.
+  List<Product> _getFilteredBase() {
+    return _products.where((p) {
       // price
       final price = p.price.toDouble();
       final priceOk = price >= _minPrice && price <= _maxPrice;
 
       // brand
       final brandOk =
-          _selectedBrands.isEmpty || _selectedBrands.contains(p.brand);
+          _selectedBrands.isEmpty || _selectedBrands.contains(p.brand.trim());
 
       // category
       final categoryOk =
           _selectedCategories.isEmpty ||
-          _selectedCategories.contains(p.category);
+          _selectedCategories.contains(p.category.trim());
 
       // stock
       final stockOk = !_inStockOnly || (p.stock > 0);
@@ -195,7 +208,7 @@ class ProductsProvider with ChangeNotifier {
           : true;
 
       // discount
-      final discountOk = (p.discountPercentage >= _minDiscount);
+      final discountOk = p.discountPercentage >= _minDiscount;
 
       return priceOk &&
           brandOk &&

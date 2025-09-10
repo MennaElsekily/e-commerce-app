@@ -39,30 +39,38 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  void _onItemTapped(int index) {
+  Future<void> _onItemTapped(int index) async {
     setState(() => _selectedIndex = index);
 
     if (index == 1) {
+      // focus search on Home
       _scrollController.animateTo(
         0,
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeInOut,
       );
       FocusScope.of(context).requestFocus(_searchFocusNode);
+      return;
     }
 
     if (index == 2) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const CartScreen()),
       );
+      if (!mounted) return;
+      setState(() => _selectedIndex = 0);
+      return;
     }
 
     if (index == 3) {
-      Navigator.push(
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const ProfileScreen()),
       );
+      if (!mounted) return;
+      setState(() => _selectedIndex = 0);
+      return;
     }
   }
 
@@ -171,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                                   icon: const Icon(Icons.clear),
                                   onPressed: () {
                                     _searchController.clear();
-                                    setState(() {});
+                                    setState(() {}); // refresh suffixIcon
                                   },
                                 )
                               : null,
@@ -301,10 +309,10 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildHorizontalList(List<Product> products) {
     if (products.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(16.0),
+      return const Padding(
+        padding: EdgeInsets.all(16.0),
         child: Column(
-          children: const [
+          children: [
             SizedBox(height: 20),
             Text(
               "No products found",
