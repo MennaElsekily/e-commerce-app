@@ -10,7 +10,6 @@ class ProductsProvider with ChangeNotifier {
   List<Product> _filteredProducts = [];
   bool _isLoading = false;
 
-  // ===== Filter state (aligned with dummyjson fields) =====
   final Set<String> _selectedBrands = {};
   final Set<String> _selectedCategories = {};
   bool _inStockOnly = false;
@@ -20,14 +19,12 @@ class ProductsProvider with ChangeNotifier {
   double _minPriceAvail = 0;
   double _maxPriceAvail = 1000;
 
-  double _minRating = 0; // product.rating is num
-  double _minDiscount = 0; // product.discountPercentage is double
+  double _minRating = 0;
+  double _minDiscount = 0;
 
-  // ===== Catalog data for UI =====
   final Set<String> _allBrands = {};
   final Set<String> _allCategories = {};
 
-  // ===== Getters =====
   List<Product> get products => _filteredProducts;
   bool get isLoading => _isLoading;
 
@@ -183,7 +180,6 @@ class ProductsProvider with ChangeNotifier {
     _filteredProducts = _getFilteredBase();
   }
 
-  /// Builds the filtered list from _products using the current filter state.
   List<Product> _getFilteredBase() {
     return _products.where((p) {
       // price
