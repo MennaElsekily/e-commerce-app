@@ -40,12 +40,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _onItemTapped(int index) async {
-    // Update the selected tab immediately
     setState(() => _selectedIndex = index);
 
     switch (index) {
       case 0:
-        // Home – nothing special
+        // Home – no-op
         break;
 
       case 1:
@@ -84,6 +83,7 @@ class _HomePageState extends State<HomePage> {
     final productsProvider = context.watch<ProductsProvider>();
     final user = authProvider.currentUser;
 
+    // Resolve avatar (network/asset/fallback)
     ImageProvider avatarImage;
     final img = user?.profileImage ?? '';
     if (img.isNotEmpty &&
@@ -96,6 +96,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
@@ -201,10 +202,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Row(
                         children: [
-                          Expanded(
+                          const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   "Get Winter Discount",
                                   style: TextStyle(
@@ -241,7 +242,12 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                             builder: (_) => const ProductsScreen(),
                           ),
-                        );
+                        ).then((res) {
+                          if (!mounted) return;
+                          if (res == 'focus-search') {
+                            _onItemTapped(1); // focus the search bar on Home
+                          }
+                        });
                       },
                     ),
                     _buildHorizontalList(productsProvider.products),
@@ -258,7 +264,12 @@ class _HomePageState extends State<HomePage> {
                           MaterialPageRoute(
                             builder: (_) => const ProductsScreen(),
                           ),
-                        );
+                        ).then((res) {
+                          if (!mounted) return;
+                          if (res == 'focus-search') {
+                            _onItemTapped(1); // focus the search bar on Home
+                          }
+                        });
                       },
                     ),
                     _buildHorizontalList(

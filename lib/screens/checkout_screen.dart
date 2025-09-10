@@ -130,7 +130,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   MaterialPageRoute(builder: (_) => const OrderHistoryScreen()),
                 );
               },
-              child: Text("Pay with ${_paymentMethod.toUpperCase()}"),
+              child: Text(
+                "Pay with ${_paymentMethod.toUpperCase()}",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         ),

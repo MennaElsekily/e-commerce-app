@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../providers/products_provider.dart';
 import '../models/product_model.dart';
 import 'productdetail_screen.dart';
-// ✅ add this import
 import '../providers/cart_provider.dart';
 
 const _kPurple = Color(0xFF6C4CFF);
@@ -52,7 +51,10 @@ class _ProductsScreenState extends State<ProductsScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.search, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              // ✅ Return to Home and ask it to focus the search bar
+              Navigator.pop(context, 'focus-search');
+            },
           ),
           const SizedBox(width: 4),
         ],

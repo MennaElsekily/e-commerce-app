@@ -134,7 +134,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                   ),
                 ),
                 onPressed: () {},
-                child: const Text("Track Order"),
+                child: const Text(
+                  "Track Order",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
